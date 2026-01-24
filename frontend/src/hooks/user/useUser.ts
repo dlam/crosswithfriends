@@ -8,7 +8,7 @@ import { useUserStore } from '@stores/userStore';
 import { getUserId, getUserName, getUserColor, setUserName, setUserColor } from '@utils/index';
 
 export const useUser = () => {
-  const { user, setUser, updateUserName, updateUserColor, darkMode, setDarkMode } = useUserStore();
+  const { user, setUser, updateUserName, updateUserColor, darkMode, setDarkMode , skipFilledSquares, setSkipFilledSquares} = useUserStore();
 
   useEffect(() => {
     // Initialize user from localStorage on mount
@@ -40,6 +40,8 @@ export const useUser = () => {
     user,
     darkMode,
     setDarkMode,
+    skipFilledSquares,
+    setSkipFilledSquares,
     changeName,
     changeColor,
   };

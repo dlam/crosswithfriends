@@ -12,6 +12,7 @@ interface UserStore {
   user: User | null;
   isAuthenticated: boolean;
   darkMode: DarkMode;
+  skipFilledSquares: boolean;
   history: {
     solvedPuzzles: string[];
     compositions: string[];
@@ -22,6 +23,7 @@ interface UserStore {
   updateUserName: (name: string) => void;
   updateUserColor: (color: string) => void;
   setDarkMode: (mode: DarkMode) => void;
+  setSkipFilledSquares: (shouldSkip: boolean) => void;
   addSolvedPuzzle: (puzzleId: string) => void;
   addComposition: (compositionId: string) => void;
   logout: () => void;
@@ -34,6 +36,7 @@ export const useUserStore = create<UserStore>()(
         user: null,
         isAuthenticated: false,
         darkMode: 'system',
+        skipFilledSquares: true,
         history: {
           solvedPuzzles: [],
           compositions: [],
@@ -56,6 +59,8 @@ export const useUserStore = create<UserStore>()(
           })),
 
         setDarkMode: (mode) => set({ darkMode: mode }),
+
+        setSkipFilledSquares: (shouldSkip) => set({ skipFilledSquares: shouldSkip }),
 
         addSolvedPuzzle: (puzzleId) =>
           set((state) => ({
@@ -84,6 +89,7 @@ export const useUserStore = create<UserStore>()(
         partialize: (state) => ({
           user: state.user,
           darkMode: state.darkMode,
+          skipFilledSquares: state.skipFilledSquares,
           history: state.history,
         }),
       }

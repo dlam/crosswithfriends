@@ -13,8 +13,8 @@ import ProfileEditor from '@components/Account/ProfileEditor';
 import AvatarUpload from '@components/Account/AvatarUpload';
 
 const Account = () => {
-  const { user, changeName, changeColor } = useUser();
-  const { history } = useUserStore();
+  const { user, changeName, changeColor, skipFilledSquares } = useUser();
+  const { history, setSkipFilledSquares } = useUserStore();
   const [editingProfile, setEditingProfile] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | undefined>(undefined);
 
@@ -157,6 +157,17 @@ const Account = () => {
               <label className="preference-label">
                 <input type="checkbox" defaultChecked />
                 <span>Highlight current word</span>
+              </label>
+            </div>
+
+            <div className="preference-group">
+              <label className="preference-label">
+                <input
+                  type="checkbox"
+                  checked={skipFilledSquares}
+                  onChange={ e => setSkipFilledSquares(e.target.checked) }
+                />
+                <span>Skip filled squares</span>
               </label>
             </div>
           </section>

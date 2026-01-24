@@ -20,6 +20,7 @@ import { useCallback } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import type { Cell, Clue } from '../../types';
 import { useGameStore } from '@stores/gameStore';
+import { useUserStore } from '@/stores';
 
 interface UseKeyboardNavigationProps {
   cells: Cell[][];
@@ -294,6 +295,7 @@ export const useKeyboardNavigation = ({
   const navigateToUnfilledClue = useCallback(
     (forward: boolean = true) => {
       const currentState = useGameStore.getState();
+      const userState = useUserStore.getState();
       const currentSelectedCell = currentState.selectedCell;
       const currentDirection = currentState.selectedDirection;
 
@@ -344,10 +346,18 @@ export const useKeyboardNavigation = ({
 
         const startCell = findClueStartCell(cells, nextClueItem.clue.number);
 
-        if (
-          startCell &&
-          hasUnfilledCells(cells, startCell.row, startCell.col, nextClueItem.direction)
-        ) {
+        if (!startCell) continue;
+
+        if (userState.skipFilledSquares) {
+            useGameStore
+              .getState()
+              .setSelectedCellAndDirection(
+                startCell.row,
+                startCell.col,
+                nextClueItem.direction
+              )
+          return;
+        } else if (hasUnfilledCells(cells, startCell.row, startCell.col, nextClueItem.direction)) {
           // Found an unfilled clue, navigate to first unfilled cell
           const unfilledCell = findFirstUnfilledInWord(
             cells,
